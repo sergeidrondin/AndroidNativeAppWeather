@@ -10,10 +10,18 @@ public class ForecastResponseSchema {
     private final List<WeatherSchema> mWeatherList;
 
     @SerializedName("main")
-    private final MainForecastInfoSchema mMain;
+    private final MainForecastInfoSchema mMainInfo;
 
     public ForecastResponseSchema(List<WeatherSchema> weatherList, MainForecastInfoSchema main) {
         this.mWeatherList = weatherList;
-        this.mMain = main;
+        this.mMainInfo = main;
+    }
+
+    public List<WeatherSchema> getWeatherList() {
+        return mWeatherList;
+    }
+
+    public MainForecastInfoSchema getMainInfo() {
+        return mMainInfo;
     }
 }

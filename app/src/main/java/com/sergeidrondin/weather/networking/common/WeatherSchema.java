@@ -1,4 +1,4 @@
-package com.sergeidrondin.weather.networking.forecast;
+package com.sergeidrondin.weather.networking.common;
 
 import com.google.gson.annotations.SerializedName;
 

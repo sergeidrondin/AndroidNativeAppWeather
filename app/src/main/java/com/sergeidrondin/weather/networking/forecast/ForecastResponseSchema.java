@@ -1,6 +1,7 @@
 package com.sergeidrondin.weather.networking.forecast;
 
 import com.google.gson.annotations.SerializedName;
+import com.sergeidrondin.weather.networking.common.WeatherSchema;
 
 import java.util.List;
 

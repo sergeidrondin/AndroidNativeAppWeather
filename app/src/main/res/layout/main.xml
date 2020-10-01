@@ -25,5 +25,4 @@
         android:onClick="onBtnClick"
         android:text="Get Weather"/>
 
-
 </LinearLayout>

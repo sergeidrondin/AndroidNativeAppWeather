@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
+import com.sergeidrondin.weather.screens.common.BaseObservableViewMvc;
 import com.sergeidrondin.weather.screens.common.BaseViewMvc;
+import com.sergeidrondin.weather.screens.common.ObservableViewMvc;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ForecastListViewMvcImpl extends BaseViewMvc implements ForecastRecyclerAdapter.OnForecastClickListener, ForecastListViewMvc {
-
-    private final List<Listener> mListeners = new ArrayList<>(1);
+public class ForecastListViewMvcImpl extends BaseObservableViewMvc<ForecastListViewMvc.Listener> implements ForecastRecyclerAdapter.OnForecastClickListener, ForecastListViewMvc {
 
     private RecyclerView mForecastRecyclerView;
     private ProgressBar mLoadingIndicator;
@@ -42,16 +42,6 @@ public class ForecastListViewMvcImpl extends BaseViewMvc implements ForecastRecy
     }
 
     @Override
-    public void registerListener(Listener listener) {
-        mListeners.add(listener);
-    }
-
-    @Override
-    public void unregisterListener(Listener listener) {
-        mListeners.remove(listener);
-    }
-
-    @Override
     public void bindForecasts(List<DailyForecastSchema> forecasts) {
         mForecastRecyclerAdapter.bindForecasts(forecasts);
     }
@@ -70,7 +60,7 @@ public class ForecastListViewMvcImpl extends BaseViewMvc implements ForecastRecy
 
     @Override
     public void onForecastClicked(DailyForecastSchema forecast) {
-        for (Listener listener: mListeners) {
+        for (Listener listener: getListeners()) {
             listener.onForecastClicked(forecast);
         }
     }

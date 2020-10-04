@@ -2,20 +2,14 @@ package com.sergeidrondin.weather.screens.forecastlist;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.common.WeatherApplication;
 import com.sergeidrondin.weather.networking.WeatherApi;
-import com.sergeidrondin.weather.networking.onecall.CurrentWeatherSchema;
 import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
 import com.sergeidrondin.weather.networking.onecall.OneCallResponseSchema;
 
@@ -25,7 +19,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ForecastListActivity extends AppCompatActivity {
+public class ForecastListActivity extends AppCompatActivity implements ForecastListViewMvcImpl.Listener {
+
     private ForecastListViewMvc mViewMvc;
 
     private final Double DEFAULT_LAT = 49.282729;
@@ -39,12 +34,20 @@ public class ForecastListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         LayoutInflater inflater = LayoutInflater.from(this);
-        mViewMvc = new ForecastListViewMvc(inflater, null);
-        setContentView(mViewMvc.getRootView());
+        mViewMvc = new ForecastListViewMvcImpl(inflater, null);
+        mViewMvc.registerListener(this);
 
         mWeatherApi = ((WeatherApplication) getApplication()).getCompositionRoot().getWeatherApi();
 
         fetchOneCallForecast();
+
+        setContentView(mViewMvc.getRootView());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mViewMvc.unregisterListener(this);
     }
 
     public void fetchOneCallForecast() {
@@ -72,9 +75,9 @@ public class ForecastListActivity extends AppCompatActivity {
     }
 
     private void notifyOneCallSuccess(OneCallResponseSchema body) {
-        mViewMvc.showForecasts();
         List<DailyForecastSchema> forecasts = body.getDaily();
         mViewMvc.bindForecasts(forecasts);
+        mViewMvc.showForecasts();
     }
 
     private void notifyFailure() {
@@ -82,5 +85,10 @@ public class ForecastListActivity extends AppCompatActivity {
         builder.setMessage("Cannot fetch forecast!");
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    @Override
+    public void onForecastClicked(DailyForecastSchema forecast) {
+        Toast.makeText(this, forecast.getWeatherSummary(), Toast.LENGTH_SHORT).show();
     }
 }

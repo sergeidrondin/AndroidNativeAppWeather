@@ -3,6 +3,8 @@ package com.sergeidrondin.weather.networking.onecall;
 import com.google.gson.annotations.SerializedName;
 import com.sergeidrondin.weather.networking.common.WeatherSchema;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class DailyForecastSchema {
@@ -98,5 +100,17 @@ public class DailyForecastSchema {
 
     public List<WeatherSchema> getWeatherList() {
         return mWeather;
+    }
+
+    public String getWeatherSummary() {
+        Long unixDateTime = getDt();
+
+        Date date = new java.util.Date(unixDateTime*1000L);
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MM.dd HH:mm z");
+        // TODO set timezone according to the city
+        sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT-7"));
+        String formattedDate = sdf.format(date);
+
+        return formattedDate + " " + getTemperature().getDay();
     }
 }

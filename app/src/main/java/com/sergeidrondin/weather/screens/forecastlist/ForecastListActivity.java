@@ -1,17 +1,15 @@
 package com.sergeidrondin.weather.screens.forecastlist;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.widget.Toast;
 
-import com.sergeidrondin.weather.common.WeatherApplication;
 import com.sergeidrondin.weather.networking.WeatherApi;
 import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
 import com.sergeidrondin.weather.networking.onecall.OneCallResponseSchema;
+import com.sergeidrondin.weather.screens.common.controllers.BaseActivity;
 
 import java.util.List;
 
@@ -19,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ForecastListActivity extends AppCompatActivity implements ForecastListViewMvcImpl.Listener {
+public class ForecastListActivity extends BaseActivity implements ForecastListViewMvcImpl.Listener {
 
     private ForecastListViewMvc mViewMvc;
 
@@ -33,11 +31,10 @@ public class ForecastListActivity extends AppCompatActivity implements ForecastL
 
         super.onCreate(savedInstanceState);
 
-        LayoutInflater inflater = LayoutInflater.from(this);
-        mViewMvc = new ForecastListViewMvcImpl(inflater, null);
+        mViewMvc = getCompositionRoot().getViewMvcFactory().getForecastListViewMvc(null);
         mViewMvc.registerListener(this);
 
-        mWeatherApi = ((WeatherApplication) getApplication()).getCompositionRoot().getWeatherApi();
+        mWeatherApi = getCompositionRoot().getWeatherApi();
 
         fetchOneCallForecast();
 

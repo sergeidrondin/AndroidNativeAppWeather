@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
 import com.sergeidrondin.weather.screens.common.BaseObservableViewMvc;
-import com.sergeidrondin.weather.screens.common.BaseViewMvc;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

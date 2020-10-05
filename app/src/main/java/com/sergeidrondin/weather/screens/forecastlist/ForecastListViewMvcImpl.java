@@ -12,10 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
 import com.sergeidrondin.weather.screens.common.BaseObservableViewMvc;
-import com.sergeidrondin.weather.screens.common.BaseViewMvc;
-import com.sergeidrondin.weather.screens.common.ObservableViewMvc;
+import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ForecastListViewMvcImpl extends BaseObservableViewMvc<ForecastListViewMvc.Listener> implements ForecastRecyclerAdapter.OnForecastClickListener, ForecastListViewMvc {
@@ -24,11 +22,11 @@ public class ForecastListViewMvcImpl extends BaseObservableViewMvc<ForecastListV
     private ProgressBar mLoadingIndicator;
     private ForecastRecyclerAdapter mForecastRecyclerAdapter;
 
-    public ForecastListViewMvcImpl(LayoutInflater inflater, ViewGroup parent) {
+    public ForecastListViewMvcImpl(LayoutInflater inflater, ViewGroup parent, ViewMvcFactory viewMvcFactory) {
         setRootView(inflater.inflate(R.layout.layout_forecast_list, parent, false));
         Context context = getContext();
 
-        mForecastRecyclerAdapter = new ForecastRecyclerAdapter(this, context);
+        mForecastRecyclerAdapter = new ForecastRecyclerAdapter(this, viewMvcFactory);
 
         mForecastRecyclerView = findViewById(R.id.recycler_forecasts);
         mLoadingIndicator = findViewById(R.id.forecast_list_progress);

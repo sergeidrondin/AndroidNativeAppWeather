@@ -1,13 +1,12 @@
 package com.sergeidrondin.weather.screens.forecastlist;
 
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
+import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
 import com.sergeidrondin.weather.screens.forecastlist.forecastlistitem.ForecastListItemViewMvc;
 import com.sergeidrondin.weather.screens.forecastlist.forecastlistitem.ForecastListItemViewMvcImpl;
 
@@ -28,7 +27,7 @@ public class ForecastRecyclerAdapter
         mListener.onForecastClicked(forecast);
     }
 
-    private final Context mContext;
+    private final ViewMvcFactory mViewMvcFactory;
     private List<DailyForecastSchema> mForecasts;
     private final OnForecastClickListener mListener;
 
@@ -43,9 +42,9 @@ public class ForecastRecyclerAdapter
 
     }
 
-    public ForecastRecyclerAdapter(OnForecastClickListener listener, Context context) {
+    public ForecastRecyclerAdapter(OnForecastClickListener listener, ViewMvcFactory viewMvcFactory) {
         mListener = listener;
-        mContext = context;
+        mViewMvcFactory = viewMvcFactory;
     }
 
     public void bindForecasts(List<DailyForecastSchema> forecasts) {
@@ -56,8 +55,7 @@ public class ForecastRecyclerAdapter
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        ForecastListItemViewMvc viewMvc = new ForecastListItemViewMvcImpl(inflater, parent);
+        ForecastListItemViewMvc viewMvc = mViewMvcFactory.getForecastListItemViewMvc(parent);
         viewMvc.registerListener(this);
         return new MyViewHolder(viewMvc);
     }

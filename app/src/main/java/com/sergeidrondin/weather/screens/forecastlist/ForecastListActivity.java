@@ -6,11 +6,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.sergeidrondin.weather.forecast.DailyFeelsLike;
 import com.sergeidrondin.weather.forecast.DailyForecast;
+import com.sergeidrondin.weather.forecast.DailyTemperature;
+import com.sergeidrondin.weather.forecast.WeatherInfo;
 import com.sergeidrondin.weather.networking.WeatherApi;
+import com.sergeidrondin.weather.networking.common.WeatherSchema;
+import com.sergeidrondin.weather.networking.onecall.DailyFeelsLikeSchema;
 import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
+import com.sergeidrondin.weather.networking.onecall.DailyTemperatureSchema;
 import com.sergeidrondin.weather.networking.onecall.OneCallResponseSchema;
 import com.sergeidrondin.weather.screens.common.controllers.BaseActivity;
+import com.sergeidrondin.weather.screens.forecastdetails.ForecastDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,22 +80,55 @@ public class ForecastListActivity extends BaseActivity implements ForecastListVi
                 } );
     }
 
-    private void notifyOneCallSuccess(OneCallResponseSchema body) {
-        List<DailyForecastSchema> forecastSchemas = body.getDaily();
-        List<DailyForecast> forecasts = new ArrayList<>(1);
-        for (DailyForecastSchema schema: forecastSchemas) {
-            forecasts.add(new DailyForecast(
-                    schema.getDt(),
-                    schema.getSunrise(),
-                    schema.getSunset(),
-                    schema.getTemperature(),
-                    schema.getFeelsLike(),
-                    schema.getPressure(),
-                    schema.getHumidity(),
-                    schema.getWindSpeed(),
-                    schema.getUVI(),
-                    schema.getWeatherList()
+    private DailyForecast getDailyForecastFromSchema(DailyForecastSchema schema) {
+        DailyTemperatureSchema temperatureSchema = schema.getTemperature();
+        DailyTemperature dailyTemperature = new DailyTemperature(
+                temperatureSchema.getDay(),
+                temperatureSchema.getMin(),
+                temperatureSchema.getMax(),
+                temperatureSchema.getNight(),
+                temperatureSchema.getEve(),
+                temperatureSchema.getMorn()
+        );
+
+        DailyFeelsLikeSchema feelsLikeSchema = schema.getFeelsLike();
+        DailyFeelsLike feelsLike = new DailyFeelsLike(
+                feelsLikeSchema.getDay(),
+                feelsLikeSchema.getNight(),
+                feelsLikeSchema.getEve(),
+                feelsLikeSchema.getMorn()
+        );
+
+        List<WeatherInfo> weatherInfos = new ArrayList<>(1);
+        for (WeatherSchema weatherSchema: schema.getWeatherList()) {
+            weatherInfos.add(new WeatherInfo(
+                    weatherSchema.getId(),
+                    weatherSchema.getMain(),
+                    weatherSchema.getDescription(),
+                    weatherSchema.getIcon()
             ));
+        }
+
+        return new DailyForecast(
+                schema.getDt(),
+                schema.getSunrise(),
+                schema.getSunset(),
+                dailyTemperature,
+                feelsLike,
+                schema.getPressure(),
+                schema.getHumidity(),
+                schema.getWindSpeed(),
+                schema.getUVI(),
+                weatherInfos
+        );
+    }
+
+    private void notifyOneCallSuccess(OneCallResponseSchema body) {
+        List<DailyForecast> forecasts = new ArrayList<>(1);
+
+        for (DailyForecastSchema schema: body.getDaily()) {
+            DailyForecast forecast = getDailyForecastFromSchema(schema);
+            forecasts.add(forecast);
         }
         mViewMvc.bindForecasts(forecasts);
         mViewMvc.showForecasts();
@@ -104,5 +144,6 @@ public class ForecastListActivity extends BaseActivity implements ForecastListVi
     @Override
     public void onForecastClicked(DailyForecast forecast) {
         Toast.makeText(this, forecast.getWeatherSummary(), Toast.LENGTH_SHORT).show();
+        ForecastDetailsActivity.start(this, forecast);
     }
 }

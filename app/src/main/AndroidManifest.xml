@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".screens.forecastdetails.ForecastDetailsActivity"></activity>
         <activity android:name=".screens.forecastlist.ForecastListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,8 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screens.common.main.MainActivity">
-        </activity>
+        <activity android:name=".screens.common.main.MainActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

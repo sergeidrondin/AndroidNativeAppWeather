@@ -1,23 +1,21 @@
 package com.sergeidrondin.weather.forecast;
 
-import com.sergeidrondin.weather.networking.common.WeatherSchema;
-import com.sergeidrondin.weather.networking.onecall.DailyFeelsLikeSchema;
-import com.sergeidrondin.weather.networking.onecall.DailyTemperatureSchema;
-
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
-public class DailyForecast {
+public class DailyForecast implements Serializable {
     private final Long mDt;
 
     private final Long mSunrise;
 
     private final Long mSunset;
 
-    private final DailyTemperatureSchema mTemp;
+    private final DailyTemperature mTemp;
 
-    private final DailyFeelsLikeSchema mFeelsLike;
+    private final DailyFeelsLike mFeelsLike;
 
     private final Integer mPressure;
 
@@ -27,19 +25,19 @@ public class DailyForecast {
 
     private final Float mUVI;
 
-    private final List<WeatherSchema> mWeather;
+    private final List<WeatherInfo> mWeather;
 
     public DailyForecast(
             Long dt,
             Long sunrise,
             Long sunset,
-            DailyTemperatureSchema temp,
-            DailyFeelsLikeSchema feelsLike,
+            DailyTemperature temp,
+            DailyFeelsLike feelsLike,
             Integer pressure,
             Integer humidity,
             Float windSpeed,
             Float uvi,
-            List<WeatherSchema> weather
+            List<WeatherInfo> weather
     ) {
         this.mDt = dt;
         this.mSunrise = sunrise;
@@ -65,11 +63,11 @@ public class DailyForecast {
         return mSunset;
     }
 
-    public DailyTemperatureSchema getTemperature() {
+    public DailyTemperature getTemperature() {
         return mTemp;
     }
 
-    public DailyFeelsLikeSchema getFeelsLike() {
+    public DailyFeelsLike getFeelsLike() {
         return mFeelsLike;
     }
 
@@ -89,7 +87,7 @@ public class DailyForecast {
         return mUVI;
     }
 
-    public List<WeatherSchema> getWeatherList() {
+    public List<WeatherInfo> getWeatherList() {
         return mWeather;
     }
 
@@ -97,9 +95,9 @@ public class DailyForecast {
         Long unixDateTime = getDt();
 
         Date date = new java.util.Date(unixDateTime*1000L);
-        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MM.dd HH:mm z");
-        // TODO set timezone according to the city
-        sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT-7"));
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MM.dd HH:mm");
+        TimeZone timeZone = TimeZone.getDefault();
+        sdf.setTimeZone(timeZone);
         String formattedDate = sdf.format(date);
 
         return formattedDate + " " + getTemperature().getDay();

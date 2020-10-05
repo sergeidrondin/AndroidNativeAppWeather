@@ -37,15 +37,6 @@ public class ForecastListItemViewMvcImpl extends BaseObservableViewMvc<ForecastL
     @Override
     public void bindForecast(DailyForecast dailyForecast) {
         mDailyForecast = dailyForecast;
-
-        Long unixDateTime = dailyForecast.getDt();
-
-        Date date = new java.util.Date(unixDateTime*1000L);
-        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MM.dd HH:mm z");
-        // TODO set timezone according to the city
-        sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT-7"));
-        String formattedDate = sdf.format(date);
-
-        mTxtTitle.setText(formattedDate + " " + dailyForecast.getTemperature().getDay());
+        mTxtTitle.setText(mDailyForecast.getWeatherSummary());
     }
 }

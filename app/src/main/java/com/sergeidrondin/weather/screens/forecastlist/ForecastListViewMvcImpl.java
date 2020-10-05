@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sergeidrondin.weather.R;
-import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
+import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.screens.common.BaseObservableViewMvc;
 import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
 
@@ -40,7 +40,7 @@ public class ForecastListViewMvcImpl extends BaseObservableViewMvc<ForecastListV
     }
 
     @Override
-    public void bindForecasts(List<DailyForecastSchema> forecasts) {
+    public void bindForecasts(List<DailyForecast> forecasts) {
         mForecastRecyclerAdapter.bindForecasts(forecasts);
     }
 
@@ -57,7 +57,7 @@ public class ForecastListViewMvcImpl extends BaseObservableViewMvc<ForecastListV
     }
 
     @Override
-    public void onForecastClicked(DailyForecastSchema forecast) {
+    public void onForecastClicked(DailyForecast forecast) {
         for (Listener listener: getListeners()) {
             listener.onForecastClicked(forecast);
         }

@@ -1,42 +1,35 @@
-package com.sergeidrondin.weather.networking.onecall;
+package com.sergeidrondin.weather.forecast;
 
-import com.google.gson.annotations.SerializedName;
 import com.sergeidrondin.weather.networking.common.WeatherSchema;
+import com.sergeidrondin.weather.networking.onecall.DailyFeelsLikeSchema;
+import com.sergeidrondin.weather.networking.onecall.DailyTemperatureSchema;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-public class DailyForecastSchema {
-    @SerializedName("dt")
+public class DailyForecast {
     private final Long mDt;
 
-    @SerializedName("sunrise")
     private final Long mSunrise;
 
-    @SerializedName("sunset")
     private final Long mSunset;
 
-    @SerializedName("temp")
     private final DailyTemperatureSchema mTemp;
 
-    @SerializedName("feels_like")
     private final DailyFeelsLikeSchema mFeelsLike;
 
-    @SerializedName("pressure")
     private final Integer mPressure;
 
-    @SerializedName("humidity")
     private final Integer mHumidity;
 
-    @SerializedName("wind_speed")
     private final Float mWindSpeed;
 
-    @SerializedName("uvi")
     private final Float mUVI;
 
-    @SerializedName("weather")
     private final List<WeatherSchema> mWeather;
 
-    public DailyForecastSchema(
+    public DailyForecast(
             Long dt,
             Long sunrise,
             Long sunset,
@@ -98,5 +91,17 @@ public class DailyForecastSchema {
 
     public List<WeatherSchema> getWeatherList() {
         return mWeather;
+    }
+
+    public String getWeatherSummary() {
+        Long unixDateTime = getDt();
+
+        Date date = new java.util.Date(unixDateTime*1000L);
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MM.dd HH:mm z");
+        // TODO set timezone according to the city
+        sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT-7"));
+        String formattedDate = sdf.format(date);
+
+        return formattedDate + " " + getTemperature().getDay();
     }
 }

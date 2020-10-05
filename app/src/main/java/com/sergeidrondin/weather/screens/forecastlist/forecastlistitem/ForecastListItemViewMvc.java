@@ -1,13 +1,13 @@
 package com.sergeidrondin.weather.screens.forecastlist.forecastlistitem;
 
-import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
+import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.screens.common.ObservableViewMvc;
 
 public interface ForecastListItemViewMvc extends ObservableViewMvc<ForecastListItemViewMvc.Listener> {
 
     public interface Listener {
-        void onForecastClicked(DailyForecastSchema forecast);
+        void onForecastClicked(DailyForecast forecast);
     }
 
-    void bindForecast(DailyForecastSchema dailyForecastSchema);
+    void bindForecast(DailyForecast dailyForecast);
 }

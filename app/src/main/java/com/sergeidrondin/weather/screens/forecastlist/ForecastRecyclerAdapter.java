@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
+import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
 import com.sergeidrondin.weather.screens.forecastlist.forecastlistitem.ForecastListItemViewMvc;
 import com.sergeidrondin.weather.screens.forecastlist.forecastlistitem.ForecastListItemViewMvcImpl;
@@ -19,16 +19,16 @@ public class ForecastRecyclerAdapter
 {
 
     public interface OnForecastClickListener {
-        void onForecastClicked(DailyForecastSchema forecast);
+        void onForecastClicked(DailyForecast forecast);
     }
 
     @Override
-    public void onForecastClicked(DailyForecastSchema forecast) {
+    public void onForecastClicked(DailyForecast forecast) {
         mListener.onForecastClicked(forecast);
     }
 
     private final ViewMvcFactory mViewMvcFactory;
-    private List<DailyForecastSchema> mForecasts;
+    private List<DailyForecast> mForecasts;
     private final OnForecastClickListener mListener;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -47,7 +47,7 @@ public class ForecastRecyclerAdapter
         mViewMvcFactory = viewMvcFactory;
     }
 
-    public void bindForecasts(List<DailyForecastSchema> forecasts) {
+    public void bindForecasts(List<DailyForecast> forecasts) {
         mForecasts = new ArrayList<>(forecasts);
         notifyDataSetChanged();
     }

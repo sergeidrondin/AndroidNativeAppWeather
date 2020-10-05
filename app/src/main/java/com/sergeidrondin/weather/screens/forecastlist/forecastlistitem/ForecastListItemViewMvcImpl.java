@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.sergeidrondin.weather.R;
-import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
+import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.screens.common.BaseObservableViewMvc;
 
 import java.text.SimpleDateFormat;
@@ -16,7 +16,7 @@ import java.util.Date;
 
 public class ForecastListItemViewMvcImpl extends BaseObservableViewMvc<ForecastListItemViewMvc.Listener> implements ForecastListItemViewMvc {
 
-    private DailyForecastSchema mDailyForecastSchema;
+    private DailyForecast mDailyForecast;
     private TextView mTxtTitle;
 
     public ForecastListItemViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
@@ -28,17 +28,17 @@ public class ForecastListItemViewMvcImpl extends BaseObservableViewMvc<ForecastL
             @Override
             public void onClick(View view) {
                 for (Listener listener : getListeners()) {
-                    listener.onForecastClicked(mDailyForecastSchema);
+                    listener.onForecastClicked(mDailyForecast);
                 }
             }
         });
     }
 
     @Override
-    public void bindForecast(DailyForecastSchema dailyForecastSchema) {
-        mDailyForecastSchema = dailyForecastSchema;
+    public void bindForecast(DailyForecast dailyForecast) {
+        mDailyForecast = dailyForecast;
 
-        Long unixDateTime = dailyForecastSchema.getDt();
+        Long unixDateTime = dailyForecast.getDt();
 
         Date date = new java.util.Date(unixDateTime*1000L);
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MM.dd HH:mm z");
@@ -46,6 +46,6 @@ public class ForecastListItemViewMvcImpl extends BaseObservableViewMvc<ForecastL
         sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT-7"));
         String formattedDate = sdf.format(date);
 
-        mTxtTitle.setText(formattedDate + " " + dailyForecastSchema.getTemperature().getDay());
+        mTxtTitle.setText(formattedDate + " " + dailyForecast.getTemperature().getDay());
     }
 }

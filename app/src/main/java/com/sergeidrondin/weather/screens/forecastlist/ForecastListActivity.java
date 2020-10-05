@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.networking.WeatherApi;
 import com.sergeidrondin.weather.networking.onecall.DailyForecastSchema;
 import com.sergeidrondin.weather.networking.onecall.OneCallResponseSchema;
 import com.sergeidrondin.weather.screens.common.controllers.BaseActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -72,7 +74,22 @@ public class ForecastListActivity extends BaseActivity implements ForecastListVi
     }
 
     private void notifyOneCallSuccess(OneCallResponseSchema body) {
-        List<DailyForecastSchema> forecasts = body.getDaily();
+        List<DailyForecastSchema> forecastSchemas = body.getDaily();
+        List<DailyForecast> forecasts = new ArrayList<>(1);
+        for (DailyForecastSchema schema: forecastSchemas) {
+            forecasts.add(new DailyForecast(
+                    schema.getDt(),
+                    schema.getSunrise(),
+                    schema.getSunset(),
+                    schema.getTemperature(),
+                    schema.getFeelsLike(),
+                    schema.getPressure(),
+                    schema.getHumidity(),
+                    schema.getWindSpeed(),
+                    schema.getUVI(),
+                    schema.getWeatherList()
+            ));
+        }
         mViewMvc.bindForecasts(forecasts);
         mViewMvc.showForecasts();
     }
@@ -85,7 +102,7 @@ public class ForecastListActivity extends BaseActivity implements ForecastListVi
     }
 
     @Override
-    public void onForecastClicked(DailyForecastSchema forecast) {
+    public void onForecastClicked(DailyForecast forecast) {
         Toast.makeText(this, forecast.getWeatherSummary(), Toast.LENGTH_SHORT).show();
     }
 }

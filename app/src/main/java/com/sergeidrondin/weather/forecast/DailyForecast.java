@@ -91,15 +91,17 @@ public class DailyForecast implements Serializable {
         return mWeather;
     }
 
-    public String getWeatherSummary() {
+    public String getFormattedDate() {
         Long unixDateTime = getDt();
 
         Date date = new java.util.Date(unixDateTime*1000L);
-        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MM.dd HH:mm");
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd.MM.yyyy");
         TimeZone timeZone = TimeZone.getDefault();
         sdf.setTimeZone(timeZone);
-        String formattedDate = sdf.format(date);
+        return sdf.format(date);
+    }
 
-        return formattedDate + " " + getTemperature().getDay();
+    public String getWeatherSummary() {
+        return getFormattedDate() + " " + getTemperature().getDay();
     }
 }

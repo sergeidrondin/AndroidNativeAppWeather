@@ -3,25 +3,35 @@ package com.sergeidrondin.weather.screens.forecastdetails;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.forecast.DailyTemperature;
+import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
+import com.sergeidrondin.weather.screens.common.toolbar.ToolbarViewMvc;
 import com.sergeidrondin.weather.screens.common.views.BaseViewMvc;
 
 public class ForecastDetailsViewMvcImpl extends BaseViewMvc implements ForecastDetailsViewMvc {
-    private TextView mMorningTextView;
-    private TextView mDayTextView;
-    private TextView mEveningTextView;
-    private TextView mNightTextView;
+    private final TextView mMorningTextView;
+    private final TextView mDayTextView;
+    private final TextView mEveningTextView;
+    private final TextView mNightTextView;
+
+    private final Toolbar mToolbar;
+    private final ToolbarViewMvc mToolbarViewMvc;
 
 
-    public ForecastDetailsViewMvcImpl(LayoutInflater inflater, ViewGroup parent) {
-        setRootView(inflater.inflate(R.layout.activity_forecast_details, parent, false));
+    public ForecastDetailsViewMvcImpl(LayoutInflater inflater, ViewGroup parent, ViewMvcFactory viewMvcFactory) {
+        setRootView(inflater.inflate(R.layout.layout_forecast_details, parent, false));
         mMorningTextView = findViewById(R.id.forecast_detail_tv_morning);
         mDayTextView = findViewById(R.id.forecast_detail_tv_day);
         mEveningTextView = findViewById(R.id.forecast_detail_tv_evening);
         mNightTextView = findViewById(R.id.forecast_detail_tv_night);
+
+        mToolbar = findViewById(R.id.forecast_details_toolbar);
+        mToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(mToolbar);
+        mToolbar.addView(mToolbarViewMvc.getRootView());
     }
 
     @Override
@@ -39,5 +49,7 @@ public class ForecastDetailsViewMvcImpl extends BaseViewMvc implements ForecastD
 
         String nightTemperature = String.valueOf(dt.getNight());
         mNightTextView.setText(nightTemperature);
+
+        mToolbarViewMvc.setTitle(getString(R.string.forecast_details_title) + " " + dailyForecast.getFormattedDate());
     }
 }

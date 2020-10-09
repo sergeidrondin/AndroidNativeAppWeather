@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.forecast.DailyForecast;
-import com.sergeidrondin.weather.screens.common.BaseObservableViewMvc;
+import com.sergeidrondin.weather.screens.common.views.BaseObservableViewMvc;
 import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
 
 import java.util.List;

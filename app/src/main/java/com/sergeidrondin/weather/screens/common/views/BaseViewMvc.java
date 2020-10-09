@@ -1,9 +1,9 @@
-package com.sergeidrondin.weather.screens.common;
+package com.sergeidrondin.weather.screens.common.views;
 
 import android.content.Context;
 import android.view.View;
 
-public class BaseViewMvc implements ViewMvc {
+public abstract class BaseViewMvc implements ViewMvc {
     private View mRootView;
 
     @Override

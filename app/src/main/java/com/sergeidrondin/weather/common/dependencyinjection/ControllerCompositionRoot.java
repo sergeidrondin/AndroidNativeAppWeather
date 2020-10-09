@@ -5,8 +5,12 @@ import android.view.LayoutInflater;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.sergeidrondin.weather.forecast.FetchOneCallForecastUseCase;
 import com.sergeidrondin.weather.networking.WeatherApi;
+import com.sergeidrondin.weather.screens.common.toastshelper.ToastsHelper;
+import com.sergeidrondin.weather.screens.common.screensnavigator.ScreensNavigator;
 import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
+import com.sergeidrondin.weather.screens.forecastlist.ForecastListController;
 
 public class ControllerCompositionRoot {
     private final ActivityCompositionRoot mActivityCompositionRoot;
@@ -27,11 +31,31 @@ public class ControllerCompositionRoot {
         return LayoutInflater.from(getContext());
     }
 
-    public WeatherApi getWeatherApi() {
+    private WeatherApi getWeatherApi() {
         return mActivityCompositionRoot.getWeatherApi();
     }
 
     public ViewMvcFactory getViewMvcFactory() {
         return new ViewMvcFactory(getLayoutInflater());
+    }
+
+    public FetchOneCallForecastUseCase getFetchOneCallForecastUseCase() {
+        return new FetchOneCallForecastUseCase(getWeatherApi());
+    }
+
+    private ScreensNavigator getScreensNavigator() {
+        return new ScreensNavigator(getContext());
+    }
+
+    public ToastsHelper getMessagesDisplayer() {
+        return new ToastsHelper(getContext());
+    }
+
+    public ForecastListController getForecastListController() {
+        return new ForecastListController(
+                getFetchOneCallForecastUseCase(),
+                getScreensNavigator(),
+                getMessagesDisplayer()
+        );
     }
 }

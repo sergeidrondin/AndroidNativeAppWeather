@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
+import com.sergeidrondin.weather.screens.forecastdetails.ForecastDetailsViewMvc;
+import com.sergeidrondin.weather.screens.forecastdetails.ForecastDetailsViewMvcImpl;
 import com.sergeidrondin.weather.screens.forecastlist.ForecastListViewMvc;
 import com.sergeidrondin.weather.screens.forecastlist.ForecastListViewMvcImpl;
 import com.sergeidrondin.weather.screens.forecastlist.forecastlistitem.ForecastListItemViewMvc;
@@ -23,5 +25,9 @@ public class ViewMvcFactory {
 
     public ForecastListItemViewMvc getForecastListItemViewMvc(@Nullable ViewGroup parent) {
         return new ForecastListItemViewMvcImpl(mLayoutInflater, parent);
+    }
+
+    public ForecastDetailsViewMvc getForecastDetailsViewMvc(@Nullable ViewGroup parent) {
+        return new ForecastDetailsViewMvcImpl(mLayoutInflater, parent);
     }
 }

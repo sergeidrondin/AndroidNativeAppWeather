@@ -1,10 +1,10 @@
-package com.sergeidrondin.weather.screens.common;
+package com.sergeidrondin.weather.screens.common.views;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BaseObservableViewMvc<ListenerType> extends BaseViewMvc implements ObservableViewMvc<ListenerType> {
+public abstract class BaseObservableViewMvc<ListenerType> extends BaseViewMvc implements ObservableViewMvc<ListenerType> {
     private Set<ListenerType> mListeners = new HashSet<>();
 
     @Override

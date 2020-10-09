@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Weather</string>
     <string name="daily_forecast_extra_tag" translatable="false">DAILY_FORECAST</string>
+    <string name="morning_label">morning</string>
+    <string name="day_label">day</string>
+    <string name="evening_label">evening</string>
+    <string name="night_label">night</string>
+    <string name="error_network_call_failed">network error</string>
 </resources>

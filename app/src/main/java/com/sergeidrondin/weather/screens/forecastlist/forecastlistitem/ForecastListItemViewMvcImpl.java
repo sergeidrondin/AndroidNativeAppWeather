@@ -9,10 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.forecast.DailyForecast;
-import com.sergeidrondin.weather.screens.common.BaseObservableViewMvc;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.sergeidrondin.weather.screens.common.views.BaseObservableViewMvc;
 
 public class ForecastListItemViewMvcImpl extends BaseObservableViewMvc<ForecastListItemViewMvc.Listener> implements ForecastListItemViewMvc {
 

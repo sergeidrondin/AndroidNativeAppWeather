@@ -1,4 +1,4 @@
-package com.sergeidrondin.weather.screens.common;
+package com.sergeidrondin.weather.screens.common.views;
 
 public interface ObservableViewMvc<ListenerType> extends ViewMvc {
 

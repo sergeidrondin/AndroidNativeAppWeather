@@ -9,7 +9,7 @@ import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.screens.common.toastshelper.ToastsHelper;
 import com.sergeidrondin.weather.screens.common.controllers.BaseActivity;
 
-public class ForecastDetailsActivity extends BaseActivity {
+public class ForecastDetailsActivity extends BaseActivity implements ForecastDetailsViewMvc.Listener {
     private ForecastDetailsViewMvc mForecastDetailsViewMvc;
     private ToastsHelper mToastsHelper;
 
@@ -39,5 +39,22 @@ public class ForecastDetailsActivity extends BaseActivity {
         String dailyForecastTag = String.valueOf(R.string.daily_forecast_extra_tag);
         intent.putExtra(dailyForecastTag, dailyForecast);
         context.startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mForecastDetailsViewMvc.registerListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mForecastDetailsViewMvc.unregisterListener(this);
+    }
+
+    @Override
+    public void onNavigateUpClicked() {
+        onBackPressed();
     }
 }

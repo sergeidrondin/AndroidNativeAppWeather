@@ -10,9 +10,11 @@ import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.forecast.DailyTemperature;
 import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
 import com.sergeidrondin.weather.screens.common.toolbar.ToolbarViewMvc;
-import com.sergeidrondin.weather.screens.common.views.BaseViewMvc;
+import com.sergeidrondin.weather.screens.common.views.BaseObservableViewMvc;
 
-public class ForecastDetailsViewMvcImpl extends BaseViewMvc implements ForecastDetailsViewMvc {
+public class ForecastDetailsViewMvcImpl extends BaseObservableViewMvc<ForecastDetailsViewMvc.Listener>
+        implements ForecastDetailsViewMvc {
+
     private final TextView mMorningTextView;
     private final TextView mDayTextView;
     private final TextView mEveningTextView;
@@ -29,9 +31,17 @@ public class ForecastDetailsViewMvcImpl extends BaseViewMvc implements ForecastD
         mEveningTextView = findViewById(R.id.forecast_detail_tv_evening);
         mNightTextView = findViewById(R.id.forecast_detail_tv_night);
 
-        mToolbar = findViewById(R.id.forecast_details_toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         mToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(mToolbar);
         mToolbar.addView(mToolbarViewMvc.getRootView());
+        mToolbarViewMvc.enableUpButtonAndListen(new ToolbarViewMvc.NavigateUpClickListener() {
+            @Override
+            public void onNavigateUpClicked() {
+                for (Listener listener: getListeners()) {
+                    listener.onNavigateUpClicked();
+                }
+            }
+        });
     }
 
     @Override

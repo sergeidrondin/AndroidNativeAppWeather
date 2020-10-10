@@ -1,8 +1,12 @@
 package com.sergeidrondin.weather.screens.forecastdetails;
 
 import com.sergeidrondin.weather.forecast.DailyForecast;
-import com.sergeidrondin.weather.screens.common.views.ViewMvc;
+import com.sergeidrondin.weather.screens.common.views.ObservableViewMvc;
 
-public interface ForecastDetailsViewMvc extends ViewMvc {
+public interface ForecastDetailsViewMvc extends ObservableViewMvc<ForecastDetailsViewMvc.Listener> {
+    public interface Listener {
+        void onNavigateUpClicked();
+    }
+
     void renderForecastDetails(DailyForecast dailyForecast);
 }

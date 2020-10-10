@@ -30,18 +30,9 @@ public class ForecastDetailsViewMvcImpl extends BaseObservableViewMvc<ForecastDe
         mDayTextView = findViewById(R.id.forecast_detail_tv_day);
         mEveningTextView = findViewById(R.id.forecast_detail_tv_evening);
         mNightTextView = findViewById(R.id.forecast_detail_tv_night);
-
         mToolbar = findViewById(R.id.toolbar);
         mToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(mToolbar);
-        mToolbar.addView(mToolbarViewMvc.getRootView());
-        mToolbarViewMvc.enableUpButtonAndListen(new ToolbarViewMvc.NavigateUpClickListener() {
-            @Override
-            public void onNavigateUpClicked() {
-                for (Listener listener: getListeners()) {
-                    listener.onNavigateUpClicked();
-                }
-            }
-        });
+        initToolbar();
     }
 
     @Override
@@ -61,5 +52,17 @@ public class ForecastDetailsViewMvcImpl extends BaseObservableViewMvc<ForecastDe
         mNightTextView.setText(nightTemperature);
 
         mToolbarViewMvc.setTitle(getString(R.string.forecast_details_title) + " " + dailyForecast.getFormattedDate());
+    }
+
+    private void initToolbar() {
+        mToolbar.addView(mToolbarViewMvc.getRootView());
+        mToolbarViewMvc.enableUpButtonAndListen(new ToolbarViewMvc.NavigateUpClickListener() {
+            @Override
+            public void onNavigateUpClicked() {
+                for (Listener listener: getListeners()) {
+                    listener.onNavigateUpClicked();
+                }
+            }
+        });
     }
 }

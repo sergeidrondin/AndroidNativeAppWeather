@@ -62,4 +62,13 @@ public class ForecastListController implements ForecastListViewMvcImpl.Listener,
         mViewMvc.showForecasts();
         mToastsHelper.showUseCaseError();
     }
+
+    public boolean onBackPressed() {
+        if (mViewMvc.isDrawerOpen()) {
+            mViewMvc.closeDrawer();
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

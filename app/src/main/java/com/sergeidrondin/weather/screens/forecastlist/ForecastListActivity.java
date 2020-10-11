@@ -31,4 +31,11 @@ public class ForecastListActivity extends BaseActivity {
         super.onStop();
         mForecastListController.onStop();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (!mForecastListController.onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
 }

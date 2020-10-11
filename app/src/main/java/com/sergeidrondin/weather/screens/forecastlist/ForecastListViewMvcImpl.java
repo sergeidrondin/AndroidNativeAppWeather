@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,17 +15,19 @@ import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.screens.common.navdrawer.BaseNavDrawerViewMvc;
 import com.sergeidrondin.weather.screens.common.navdrawer.DrawerItems;
-import com.sergeidrondin.weather.screens.common.views.BaseObservableViewMvc;
 import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
+import com.sergeidrondin.weather.screens.common.toolbar.ToolbarViewMvc;
 
 import java.util.List;
 
 public class ForecastListViewMvcImpl extends BaseNavDrawerViewMvc<ForecastListViewMvc.Listener>
-        implements ForecastRecyclerAdapter.OnForecastClickListener, ForecastListViewMvc {
+        implements ForecastListViewMvc, ForecastRecyclerAdapter.OnForecastClickListener {
 
-    private RecyclerView mForecastRecyclerView;
-    private ProgressBar mLoadingIndicator;
-    private ForecastRecyclerAdapter mForecastRecyclerAdapter;
+    private final RecyclerView mForecastRecyclerView;
+    private final ProgressBar mLoadingIndicator;
+    private final ForecastRecyclerAdapter mForecastRecyclerAdapter;
+    private final Toolbar mToolbar;
+    private final ToolbarViewMvc mToolbarViewMvc;
 
     public ForecastListViewMvcImpl(LayoutInflater inflater, ViewGroup parent, ViewMvcFactory viewMvcFactory) {
         super(inflater, parent);
@@ -37,6 +41,8 @@ public class ForecastListViewMvcImpl extends BaseNavDrawerViewMvc<ForecastListVi
 
         mForecastRecyclerView = findViewById(R.id.recycler_forecasts);
         mLoadingIndicator = findViewById(R.id.forecast_list_progress);
+        mToolbar = findViewById(R.id.toolbar);
+        mToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(mToolbar);
 
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -44,6 +50,19 @@ public class ForecastListViewMvcImpl extends BaseNavDrawerViewMvc<ForecastListVi
         mForecastRecyclerView.setLayoutManager(layoutManager);
         mForecastRecyclerView.setHasFixedSize(true);
         mForecastRecyclerView.setAdapter(mForecastRecyclerAdapter);
+
+        initToolbar();
+    }
+
+    private void initToolbar() {
+        mToolbar.addView(mToolbarViewMvc.getRootView());
+        mToolbarViewMvc.setTitle(getString(R.string.forecast_list_title));
+        mToolbarViewMvc.enableHamburgerButtonAndListen(new ToolbarViewMvc.HamburgerClickListener() {
+            @Override
+            public void onHamburgerClicked() {
+                openDrawer();
+            }
+        });
     }
 
     @Override

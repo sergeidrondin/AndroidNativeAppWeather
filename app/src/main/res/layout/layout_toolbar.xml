@@ -6,6 +6,17 @@
     android:background="@color/colorPrimaryDark">
 
     <ImageButton
+        android:id="@+id/btn_hamburger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_hamburger"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -9,6 +9,8 @@ public interface ForecastListViewMvc extends ObservableViewMvc<ForecastListViewM
 
     public interface Listener {
         void onForecastClicked(DailyForecast forecast);
+
+        void onForecastListClicked();
     }
 
     void bindForecasts(List<DailyForecast> forecasts);

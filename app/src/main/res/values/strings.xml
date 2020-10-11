@@ -7,4 +7,5 @@
     <string name="night_label">night</string>
     <string name="error_network_call_failed">network error</string>
     <string name="forecast_details_title">Forecast for</string>
+    <string name="drawer_menu_item_forecast_list">Forecast</string>
 </resources>

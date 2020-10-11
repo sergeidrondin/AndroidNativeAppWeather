@@ -11,19 +11,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.forecast.DailyForecast;
+import com.sergeidrondin.weather.screens.common.navdrawer.BaseNavDrawerViewMvc;
+import com.sergeidrondin.weather.screens.common.navdrawer.DrawerItems;
 import com.sergeidrondin.weather.screens.common.views.BaseObservableViewMvc;
 import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
 
 import java.util.List;
 
-public class ForecastListViewMvcImpl extends BaseObservableViewMvc<ForecastListViewMvc.Listener> implements ForecastRecyclerAdapter.OnForecastClickListener, ForecastListViewMvc {
+public class ForecastListViewMvcImpl extends BaseNavDrawerViewMvc<ForecastListViewMvc.Listener>
+        implements ForecastRecyclerAdapter.OnForecastClickListener, ForecastListViewMvc {
 
     private RecyclerView mForecastRecyclerView;
     private ProgressBar mLoadingIndicator;
     private ForecastRecyclerAdapter mForecastRecyclerAdapter;
 
     public ForecastListViewMvcImpl(LayoutInflater inflater, ViewGroup parent, ViewMvcFactory viewMvcFactory) {
-        setRootView(inflater.inflate(R.layout.layout_forecast_list, parent, false));
+        super(inflater, parent);
+
+        View rootView = inflater.inflate(R.layout.layout_forecast_list, parent, false);
+        setRootView(rootView);
+
         Context context = getContext();
 
         mForecastRecyclerAdapter = new ForecastRecyclerAdapter(this, viewMvcFactory);
@@ -60,6 +67,16 @@ public class ForecastListViewMvcImpl extends BaseObservableViewMvc<ForecastListV
     public void onForecastClicked(DailyForecast forecast) {
         for (Listener listener: getListeners()) {
             listener.onForecastClicked(forecast);
+        }
+    }
+
+    @Override
+    protected void onDrawerItemClicked(DrawerItems item) {
+        for (Listener listener: getListeners()) {
+            switch (item) {
+                case FORECAST_LIST:
+                    listener.onForecastListClicked();
+            }
         }
     }
 }

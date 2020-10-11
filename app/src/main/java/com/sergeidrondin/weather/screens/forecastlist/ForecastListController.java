@@ -47,6 +47,11 @@ public class ForecastListController implements ForecastListViewMvcImpl.Listener,
     }
 
     @Override
+    public void onForecastListClicked() {
+        // this is already ForecastList - so no operation required
+    }
+
+    @Override
     public void onOneCallForecastFetched(List<DailyForecast> forecasts) {
         mViewMvc.bindForecasts(forecasts);
         mViewMvc.showForecasts();

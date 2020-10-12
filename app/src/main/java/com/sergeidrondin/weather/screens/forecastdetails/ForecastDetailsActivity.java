@@ -6,12 +6,15 @@ import android.os.Bundle;
 
 import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.forecast.DailyForecast;
+import com.sergeidrondin.weather.screens.common.navdrawer.DrawerItems;
+import com.sergeidrondin.weather.screens.common.screensnavigator.ScreensNavigator;
 import com.sergeidrondin.weather.screens.common.toastshelper.ToastsHelper;
 import com.sergeidrondin.weather.screens.common.controllers.BaseActivity;
 
 public class ForecastDetailsActivity extends BaseActivity implements ForecastDetailsViewMvc.Listener {
     private ForecastDetailsViewMvc mForecastDetailsViewMvc;
     private ToastsHelper mToastsHelper;
+    private ScreensNavigator mScreensNavigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +23,7 @@ public class ForecastDetailsActivity extends BaseActivity implements ForecastDet
 
         mForecastDetailsViewMvc = getCompositionRoot().getViewMvcFactory().getForecastDetailsViewMvc(null);
         mToastsHelper = getCompositionRoot().getMessagesDisplayer();
+        mScreensNavigator = getCompositionRoot().getScreensNavigator();
 
         Intent intent = getIntent();
         String dailyForecastExtraTag = String.valueOf(R.string.daily_forecast_extra_tag);
@@ -56,5 +60,22 @@ public class ForecastDetailsActivity extends BaseActivity implements ForecastDet
     @Override
     public void onNavigateUpClicked() {
         onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mForecastDetailsViewMvc.isDrawerOpen()) {
+            mForecastDetailsViewMvc.closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onDrawerItemClicked(DrawerItems item) {
+        switch(item) {
+            case FORECAST_LIST:
+                mScreensNavigator.toForecastListClearTop();
+        }
     }
 }

@@ -43,7 +43,7 @@ public class ControllerCompositionRoot {
         return new FetchOneCallForecastUseCase(getWeatherApi());
     }
 
-    private ScreensNavigator getScreensNavigator() {
+    public ScreensNavigator getScreensNavigator() {
         return new ScreensNavigator(getContext());
     }
 

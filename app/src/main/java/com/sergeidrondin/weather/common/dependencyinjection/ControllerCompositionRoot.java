@@ -9,7 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import com.sergeidrondin.weather.forecast.FetchOneCallForecastUseCase;
 import com.sergeidrondin.weather.networking.WeatherApi;
 import com.sergeidrondin.weather.screens.common.controllers.BackPressDispatcher;
-import com.sergeidrondin.weather.screens.common.controllers.FragmentFrameWrapper;
+import com.sergeidrondin.weather.screens.common.fragmentframehelper.FragmentFrameHelper;
+import com.sergeidrondin.weather.screens.common.fragmentframehelper.FragmentFrameWrapper;
 import com.sergeidrondin.weather.screens.common.toastshelper.ToastsHelper;
 import com.sergeidrondin.weather.screens.common.screensnavigator.ScreensNavigator;
 import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
@@ -51,7 +52,11 @@ public class ControllerCompositionRoot {
     }
 
     public ScreensNavigator getScreensNavigator() {
-        return new ScreensNavigator(getFragmentManager(), getFragmentFrameWrapper());
+        return new ScreensNavigator(getFragmentFrameHelper());
+    }
+
+    private FragmentFrameHelper getFragmentFrameHelper() {
+        return new FragmentFrameHelper(getActivity(), getFragmentFrameWrapper(), getFragmentManager());
     }
 
     private FragmentFrameWrapper getFragmentFrameWrapper() {

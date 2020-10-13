@@ -1,4 +1,4 @@
-package com.sergeidrondin.weather.screens.common.controllers;
+package com.sergeidrondin.weather.screens.common.fragmentframehelper;
 
 import android.widget.FrameLayout;
 

@@ -70,7 +70,7 @@ public class ForecastDetailsFragment extends BaseFragment implements BackPressed
 
     @Override
     public void onNavigateUpClicked() {
-        mScreensNavigator.toForecastList();
+        mScreensNavigator.navigateUp();
     }
 
     @Override

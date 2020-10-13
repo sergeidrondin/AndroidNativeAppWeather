@@ -2,27 +2,32 @@ package com.sergeidrondin.weather.screens.forecastlist;
 
 import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.forecast.FetchOneCallForecastUseCase;
+import com.sergeidrondin.weather.screens.common.controllers.BackPressDispatcher;
+import com.sergeidrondin.weather.screens.common.controllers.BackPressedListener;
 import com.sergeidrondin.weather.screens.common.toastshelper.ToastsHelper;
 import com.sergeidrondin.weather.screens.common.screensnavigator.ScreensNavigator;
 
 import java.util.List;
 
-public class ForecastListController implements ForecastListViewMvcImpl.Listener, FetchOneCallForecastUseCase.Listener {
+public class ForecastListController implements ForecastListViewMvcImpl.Listener, FetchOneCallForecastUseCase.Listener, BackPressedListener {
 
     private final FetchOneCallForecastUseCase mFetchOneCallForecastUseCase;
     private final ScreensNavigator mScreensNavigator;
     private final ToastsHelper mToastsHelper;
+    private final BackPressDispatcher mBackPressDispatcher;
 
     private ForecastListViewMvc mViewMvc;
 
     public ForecastListController(
             FetchOneCallForecastUseCase fetchOneCallForecastUseCase,
             ScreensNavigator screensNavigator,
-            ToastsHelper mToastsHelper
+            ToastsHelper toastsHelper,
+            BackPressDispatcher backPressDispatcher
     ) {
-        this.mFetchOneCallForecastUseCase = fetchOneCallForecastUseCase;
-        this.mScreensNavigator = screensNavigator;
-        this.mToastsHelper = mToastsHelper;
+        mFetchOneCallForecastUseCase = fetchOneCallForecastUseCase;
+        mScreensNavigator = screensNavigator;
+        mToastsHelper = toastsHelper;
+        mBackPressDispatcher = backPressDispatcher;
     }
 
     public void bindView(ForecastListViewMvc viewMvc) {
@@ -34,11 +39,13 @@ public class ForecastListController implements ForecastListViewMvcImpl.Listener,
         mViewMvc.showLoading();
         mFetchOneCallForecastUseCase.fetchOneCallForecastAndNotify();
         mViewMvc.registerListener(this);
+        mBackPressDispatcher.registerListener(this);
     }
 
     public void onStop() {
         mFetchOneCallForecastUseCase.unregisterListener(this);
         mViewMvc.unregisterListener(this);
+        mBackPressDispatcher.unregisterListener(this);
     }
 
     @Override

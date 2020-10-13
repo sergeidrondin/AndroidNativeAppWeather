@@ -7,18 +7,22 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import com.sergeidrondin.weather.screens.common.controllers.BackPressedListener;
 import com.sergeidrondin.weather.screens.common.controllers.BaseFragment;
 
-public class ForecastListFragment extends BaseFragment implements BackPressedListener {
+public class ForecastListFragment extends BaseFragment {
+
+    public static Fragment newInstance() {
+        return new ForecastListFragment();
+    }
 
     private ForecastListController mForecastListController;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ForecastListViewMvc viewMvc = getCompositionRoot().getViewMvcFactory().getForecastListViewMvc(null);
+        ForecastListViewMvc viewMvc = getCompositionRoot().getViewMvcFactory().getForecastListViewMvc(container);
         mForecastListController = getCompositionRoot().getForecastListController();
 
         mForecastListController.bindView(viewMvc);
@@ -36,10 +40,5 @@ public class ForecastListFragment extends BaseFragment implements BackPressedLis
     public void onStop() {
         super.onStop();
         mForecastListController.onStop();
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        return mForecastListController.onBackPressed();
     }
 }

@@ -4,6 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.sergeidrondin.weather.R;
+import com.sergeidrondin.weather.screens.common.controllers.BackPressedListener;
 import com.sergeidrondin.weather.screens.common.controllers.BaseActivity;
 
 public class ForecastListActivity extends BaseActivity {
@@ -14,35 +19,26 @@ public class ForecastListActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
-    private ForecastListController mForecastListController;
+    private BackPressedListener mBackPressedListener;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ForecastListViewMvc viewMvc = getCompositionRoot().getViewMvcFactory().getForecastListViewMvc(null);
-        mForecastListController = getCompositionRoot().getForecastListController();
-
-        mForecastListController.bindView(viewMvc);
-
-        setContentView(viewMvc.getRootView());
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mForecastListController.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mForecastListController.onStop();
+        setContentView(R.layout.layout_content_frame);
+        ForecastListFragment fragment;
+        if (savedInstanceState == null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            fragment = new ForecastListFragment();
+            ft.add(R.id.frame_content, fragment).commit();
+        } else {
+            fragment = (ForecastListFragment) getSupportFragmentManager().findFragmentById(R.id.frame_content);
+        }
+        mBackPressedListener = fragment;
     }
 
     @Override
     public void onBackPressed() {
-        if (!mForecastListController.onBackPressed()) {
+        if (!mBackPressedListener.onBackPressed()) {
             super.onBackPressed();
         }
     }

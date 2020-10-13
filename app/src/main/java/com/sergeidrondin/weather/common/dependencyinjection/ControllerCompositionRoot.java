@@ -58,4 +58,8 @@ public class ControllerCompositionRoot {
                 getMessagesDisplayer()
         );
     }
+
+    public ActivityCompositionRoot getActivityCompositionRoot() {
+        return mActivityCompositionRoot;
+    }
 }

@@ -2,7 +2,6 @@ package com.sergeidrondin.weather.screens.common.navdrawer;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -15,15 +14,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.screens.common.views.BaseObservableViewMvc;
 
-public abstract class BaseNavDrawerViewMvc<ListenerType> extends BaseObservableViewMvc<ListenerType>
+public class NavDrawerViewMvcImpl extends BaseObservableViewMvc<NavDrawerViewMvc.Listener>
     implements NavDrawerViewMvc {
 
     private final DrawerLayout mDrawerLayout;
     private final FrameLayout mFrameLayout;
     private final NavigationView mNavigationView;
 
-    public BaseNavDrawerViewMvc(LayoutInflater inflater, @Nullable ViewGroup parent) {
-        super.setRootView(inflater.inflate(R.layout.layout_drawer, parent, false));
+    public NavDrawerViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
+        setRootView(inflater.inflate(R.layout.layout_drawer, parent, false));
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mFrameLayout = findViewById(R.id.frame_content);
         mNavigationView = findViewById(R.id.nav_view);
@@ -33,7 +32,9 @@ public abstract class BaseNavDrawerViewMvc<ListenerType> extends BaseObservableV
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 mDrawerLayout.closeDrawers();
                 if (item.getItemId() == R.id.drawer_menu_forecast_list) {
-                    onDrawerItemClicked(DrawerItems.FORECAST_LIST);
+                    for (Listener listener: getListeners()) {
+                        listener.onForecastListClicked();
+                    }
                 }
                 return false;
             }
@@ -46,6 +47,11 @@ public abstract class BaseNavDrawerViewMvc<ListenerType> extends BaseObservableV
     }
 
     @Override
+    public FrameLayout getFragmentFrame() {
+        return mFrameLayout;
+    }
+
+    @Override
     public boolean isDrawerOpen() {
         return mDrawerLayout.isDrawerOpen(GravityCompat.START);
     }
@@ -53,12 +59,5 @@ public abstract class BaseNavDrawerViewMvc<ListenerType> extends BaseObservableV
     @Override
     public void closeDrawer() {
         mDrawerLayout.closeDrawers();
-    }
-
-    protected abstract void onDrawerItemClicked(DrawerItems item);
-
-    @Override
-    protected void setRootView(View view) {
-        mFrameLayout.addView(view);
     }
 }

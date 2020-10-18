@@ -9,12 +9,10 @@ import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.forecast.DailyForecast;
 import com.sergeidrondin.weather.forecast.DailyTemperature;
 import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
-import com.sergeidrondin.weather.screens.common.navdrawer.BaseNavDrawerViewMvc;
-import com.sergeidrondin.weather.screens.common.navdrawer.DrawerItems;
 import com.sergeidrondin.weather.screens.common.toolbar.ToolbarViewMvc;
-import com.sergeidrondin.weather.screens.forecastlist.ForecastListViewMvc;
+import com.sergeidrondin.weather.screens.common.views.BaseObservableViewMvc;
 
-public class ForecastDetailsViewMvcImpl extends BaseNavDrawerViewMvc<ForecastDetailsViewMvc.Listener>
+public class ForecastDetailsViewMvcImpl extends BaseObservableViewMvc<ForecastDetailsViewMvc.Listener>
         implements ForecastDetailsViewMvc {
 
     private final TextView mMorningTextView;
@@ -27,8 +25,6 @@ public class ForecastDetailsViewMvcImpl extends BaseNavDrawerViewMvc<ForecastDet
 
 
     public ForecastDetailsViewMvcImpl(LayoutInflater inflater, ViewGroup parent, ViewMvcFactory viewMvcFactory) {
-        super(inflater, parent);
-
         setRootView(inflater.inflate(R.layout.layout_forecast_details, parent, false));
         mMorningTextView = findViewById(R.id.forecast_detail_tv_morning);
         mDayTextView = findViewById(R.id.forecast_detail_tv_day);
@@ -68,12 +64,5 @@ public class ForecastDetailsViewMvcImpl extends BaseNavDrawerViewMvc<ForecastDet
                 }
             }
         });
-    }
-
-    @Override
-    protected void onDrawerItemClicked(DrawerItems item) {
-        for (Listener listener: getListeners()) {
-            listener.onDrawerItemClicked(item);
-        }
     }
 }

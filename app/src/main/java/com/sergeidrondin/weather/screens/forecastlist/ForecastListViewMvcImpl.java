@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sergeidrondin.weather.R;
 import com.sergeidrondin.weather.forecast.DailyForecast;
-import com.sergeidrondin.weather.screens.common.navdrawer.BaseNavDrawerViewMvc;
-import com.sergeidrondin.weather.screens.common.navdrawer.DrawerItems;
 import com.sergeidrondin.weather.screens.common.ViewMvcFactory;
+import com.sergeidrondin.weather.screens.common.navdrawer.NavDrawerHelper;
 import com.sergeidrondin.weather.screens.common.toolbar.ToolbarViewMvc;
+import com.sergeidrondin.weather.screens.common.views.BaseObservableViewMvc;
 
 import java.util.List;
 
-public class ForecastListViewMvcImpl extends BaseNavDrawerViewMvc<ForecastListViewMvc.Listener>
+public class ForecastListViewMvcImpl extends BaseObservableViewMvc<ForecastListViewMvc.Listener>
         implements ForecastListViewMvc, ForecastRecyclerAdapter.OnForecastClickListener {
 
     private final RecyclerView mForecastRecyclerView;
@@ -27,9 +27,10 @@ public class ForecastListViewMvcImpl extends BaseNavDrawerViewMvc<ForecastListVi
     private final ForecastRecyclerAdapter mForecastRecyclerAdapter;
     private final Toolbar mToolbar;
     private final ToolbarViewMvc mToolbarViewMvc;
+    private final NavDrawerHelper mNavDrawerHelper;
 
-    public ForecastListViewMvcImpl(LayoutInflater inflater, ViewGroup parent, ViewMvcFactory viewMvcFactory) {
-        super(inflater, parent);
+    public ForecastListViewMvcImpl(LayoutInflater inflater, ViewGroup parent, ViewMvcFactory viewMvcFactory, NavDrawerHelper navDrawerHelper) {
+        this.mNavDrawerHelper = navDrawerHelper;
 
         View rootView = inflater.inflate(R.layout.layout_forecast_list, parent, false);
         setRootView(rootView);
@@ -59,7 +60,7 @@ public class ForecastListViewMvcImpl extends BaseNavDrawerViewMvc<ForecastListVi
         mToolbarViewMvc.enableHamburgerButtonAndListen(new ToolbarViewMvc.HamburgerClickListener() {
             @Override
             public void onHamburgerClicked() {
-                openDrawer();
+                mNavDrawerHelper.openDrawer();
             }
         });
     }
@@ -85,16 +86,6 @@ public class ForecastListViewMvcImpl extends BaseNavDrawerViewMvc<ForecastListVi
     public void onForecastClicked(DailyForecast forecast) {
         for (Listener listener: getListeners()) {
             listener.onForecastClicked(forecast);
-        }
-    }
-
-    @Override
-    protected void onDrawerItemClicked(DrawerItems item) {
-        for (Listener listener: getListeners()) {
-            switch (item) {
-                case FORECAST_LIST:
-                    listener.onForecastListClicked();
-            }
         }
     }
 }
